@@ -169,12 +169,24 @@ trait ManagesLayouts
     public static function parentPlaceholder($section = '')
     {
         if (! isset(static::$parentPlaceholder[$section])) {
-            $key = Container::getInstance()->make('config')['app.key'];
+            $salt = static::parentPlaceholderSalt();
 
-            static::$parentPlaceholder[$section] = '##parent-placeholder-'.sha1($key.$section).'##';
+            static::$parentPlaceholder[$section] = '##parent-placeholder-'.sha1($salt.$section).'##';
         }
 
         return static::$parentPlaceholder[$section];
+    }
+
+    /**
+     * Get the salt for the parent placeholder hash.
+     *
+     * @return string
+     */
+    protected static function parentPlaceholderSalt()
+    {
+        $container = Container::getInstance();
+
+        return $container->bound('config') ? $container->make('config')->get('app.key', '') : '';
     }
 
     /**

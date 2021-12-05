@@ -30,7 +30,16 @@ class ViewFactoryTest extends TestCase
     protected function setUp() : void
     {
         $container = Container::getInstance();
-        $container->instance('config', ['app.key' => Str::random(16)]);
+        $container->instance('config', new class {
+            public function get($key, $default)
+            {
+                if ($key == 'app.key') {
+                    return Str::random(16);
+                }
+
+                return value($default);
+            }
+        });
     }
 
     protected function tearDown(): void
