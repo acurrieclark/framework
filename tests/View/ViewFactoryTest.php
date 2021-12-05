@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Illuminate\View\Compilers\CompilerInterface;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
@@ -26,8 +27,15 @@ use stdClass;
 
 class ViewFactoryTest extends TestCase
 {
+    protected function setUp() : void
+    {
+        $container = Container::getInstance();
+        $container->instance('config', ['app.key' => Str::random(16)]);
+    }
+
     protected function tearDown(): void
     {
+        Container::setInstance(null);
         m::close();
     }
 
