@@ -27,10 +27,11 @@ use stdClass;
 
 class ViewFactoryTest extends TestCase
 {
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $container = Container::getInstance();
-        $container->instance('config', new class {
+        $container->instance('config', new class
+        {
             public function get($key, $default)
             {
                 if ($key == 'app.key') {
